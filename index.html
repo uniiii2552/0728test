@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1" />
+  <title>糯米橋旅遊行程規劃</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div class="container">
+    <h1>糯米橋旅遊行程規劃</h1>
+
+    <div class="content">
+      <!-- 左：側欄（桌機）／抽屜（手機） -->
+      <div class="sidebar">
+        <h2>選擇景點：</h2>
+
+        <!-- 類型篩選 -->
+        <div class="box">
+          <h3>類型篩選</h3>
+          <div class="filters">
+            <label><input type="checkbox" class="type-filter" value="景點" checked> 景點</label><br>
+            <label><input type="checkbox" class="type-filter" value="農遊體驗" checked> 農遊體驗</label><br>
+            <label><input type="checkbox" class="type-filter" value="餐廳" checked> 餐廳</label><br>
+            <label><input type="checkbox" class="type-filter" value="民宿" checked> 民宿</label>
+          </div>
+          <div class="filter-actions">
+            <button id="selectVisible" type="button">全選可見</button>
+            <button id="clearVisible" type="button" class="btn-ghost">清除可見</button>
+          </div>
+        </div>
+
+        <!-- 規劃設定 -->
+        <div class="box">
+          <h3>規劃設定</h3>
+          <label for="startSelect">起點：</label>
+          <select id="startSelect">
+            <option value="first">以「第一個勾選的景點」為起點</option>
+            <option value="current">使用目前位置（需授權）</option>
+          </select>
+
+          <label for="travelMode">交通方式：</label>
+          <select id="travelMode">
+            <option value="DRIVING">開車</option>
+            <option value="WALKING">步行</option>
+            <option value="BICYCLING">單車</option>
+          </select>
+
+          <label for="departTime">出發時間：</label>
+          <input id="departTime" type="time" value="09:00" />
+
+          <div class="button-row">
+            <button id="planRoute">建議排序規劃</button>
+            <button id="clearRoute" class="btn-ghost">清除路線</button>
+            <button id="exportLink" class="btn-ghost">在 Google 地圖開啟</button>
+          </div>
+        </div>
+
+        <!-- 可勾選清單 -->
+        <div class="box">
+          <h3>可勾選景點</h3>
+          <div id="checkbox-list"></div>
+        </div>
+
+        <!-- 已選行程 -->
+        <div class="selected box">
+          <h2>已選行程（可拖曳）</h2>
+          <ol id="selected-list" class="sortable-list"></ol>
+          <div class="selected-actions">
+            <button id="planManual" type="button">依目前順序規劃</button>
+            <button id="suggestOrder" type="button" class="btn-ghost">使用建議排序</button>
+            <button id="clearSelected" type="button" class="btn-danger">清空已選</button>
+          </div>
+        </div>
+
+        <!-- 一鍵套用 PDF 行程 -->
+        <div class="box">
+          <h3>📋 一鍵套用行程（PDF）</h3>
+          <div class="preset-grid">
+            <button id="preset1D_A">1日｜祝福一</button>
+            <button id="preset1D_B">1日｜祝福二</button>
+            <button id="preset1D_C">1日｜祝福三</button>
+          </div>
+          <div class="note">會自動勾選景點、帶入預設停留、出發 09:00、開車模式。</div>
+        </div>
+
+        <!-- 搜尋並加入 -->
+        <div class="box">
+          <h3>🔎 搜尋並加入</h3>
+          <input id="placeSearch" type="text" placeholder="輸入地點名稱或地址…" />
+          <button id="addSearchPlace" style="margin-top:8px">加入行程</button>
+          <div id="searchInfo" class="muted" style="margin-top:6px">請在上方輸入並選取一個地點。</div>
+        </div>
+
+        <!-- 午餐建議 -->
+        <div class="box">
+          <h3>🍽️ 午餐建議</h3>
+          <div class="row">
+            <label>搜尋半徑(公尺)</label>
+            <input id="lunchRadius" type="number" value="500" min="100" step="50" />
+          </div>
+          <button id="suggestLunch">在 ETA 12:00±60 分附近找餐廳</button>
+          <div id="lunchResults" style="margin-top:8px;font-size:13px;"></div>
+        </div>
+      </div>
+
+      <!-- 右：地圖 -->
+      <div id="map">🗺 地圖載入中...</div>
+
+      <!-- 手機：浮動開關與遮罩（桌機預設隱藏，手機 RWD 會顯示） -->
+      <button id="toggleSidebar" class="fab" aria-label="開啟行程面板">行程</button>
+      <div id="backdrop" class="backdrop" aria-hidden="true"></div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.2/Sortable.min.js" defer></script>
+  <script src="script.js" defer></script>
+  <script
+    src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDSectxHqQ5_H3o8E1IRWsxdzzR27bEfJA&callback=initMap&v=weekly&loading=async&libraries=marker,places"
+    defer
+  ></script>
+</body>
+</html>

@@ -1,0 +1,159 @@
+:root{
+  --bg:#f6f6f6;
+  --card:#ffffff;
+  --border:#e2e2e2;
+  --text:#222;
+  --muted:#666;
+  --brand:#0d6efd;
+  --danger:#e74c3c;
+}
+
+*{ box-sizing:border-box; }
+html, body { height:100%; }
+body{
+  margin:0;
+  font-family: "Noto Sans TC", system-ui, -apple-system, Segoe UI, Roboto,
+               "Helvetica Neue", Arial, "PingFang TC", "Microsoft JhengHei", sans-serif;
+  color:var(--text);
+  background:var(--bg);
+}
+
+/* ✅ 修正：桌機預設隱藏手機元件，避免佔滿地圖 */
+.fab { display: none; }
+.backdrop { display: none; }
+
+.container{ max-width:1280px; margin:0 auto; padding:20px; }
+h1{ margin:0 0 16px 0; font-size:28px; letter-spacing:.5px; }
+
+.content{
+  display:flex; flex-direction:row; align-items:stretch;
+  gap:20px; min-height:640px; flex-wrap:nowrap; position:relative;
+}
+
+.sidebar{
+  width:320px; flex:0 0 320px;
+  background:var(--card); border:1px solid var(--border); border-radius:10px;
+  padding:14px 14px 18px; overflow:auto; max-height:calc(100vh - 120px);
+  position:relative; z-index:5;
+}
+.sidebar h2{ margin:12px 0 8px; font-size:18px; }
+.sidebar h3{ margin:0 0 8px; font-size:14px; color:#111; }
+
+#map{
+  flex: 1 1 auto;               /* ✅ 修正：確保吃滿右側空間 */
+  min-height:640px; height:auto;
+  background:#fafafa; border:1px solid var(--border); border-radius:10px;
+  position:relative; z-index:1;
+}
+
+/* Box, Buttons */
+.box{
+  background:#fff; border:1px solid var(--border);
+  border-radius:10px; padding:10px; margin-bottom:12px;
+}
+.note{ font-size:12px; color:var(--muted); margin-top:6px; }
+.muted{ color:var(--muted); }
+
+button, select, input[type="time"], input[type="number"], input[type="text"]{
+  width:100%; padding:8px 10px; font-size:14px;
+  border:1px solid var(--border); border-radius:8px; background:#fff;
+}
+button{
+  cursor:pointer; border:none; background:var(--brand);
+  color:#fff; font-weight:600; transition:filter .15s;
+}
+button:hover{ filter:brightness(0.95); }
+.btn-ghost{ background:#fff; color:#333; border:1px solid var(--border); }
+.btn-danger{ background:var(--danger); color:#fff; }
+.button-row{ display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; }
+
+.filters label{ font-size:14px; }
+.filter-actions{ display:flex; gap:8px; margin-top:8px; }
+.filter-actions button{ flex:1 1 0; }
+
+#checkbox-list .row{
+  display:flex; align-items:center; gap:8px;
+  padding:6px 0; border-bottom:1px dashed #eee;
+}
+#checkbox-list label{ cursor:pointer; }
+
+/* 已選行程 */
+.selected{ margin-top:6px; }
+.sortable-list{
+  list-style:decimal inside;
+  padding:6px 8px; margin:6px 0 10px 0;
+  border:1px dashed #e0e0e0; border-radius:8px; background:#fafafa;
+}
+.sortable-list li{
+  display:flex; align-items:center; gap:8px;
+  padding:6px 8px; margin:4px 0;
+  background:#fff; border:1px solid #eee; border-radius:6px;
+  cursor:grab; flex-wrap:wrap;
+}
+.sortable-list li:active{ cursor:grabbing; }
+.sortable-list .name{ flex:1 1 auto; }
+.sortable-list .staywrap{ display:flex; align-items:center; gap:6px; }
+.sortable-list input.stay{
+  width:80px; padding:6px 8px; font-size:13px;
+  border:1px solid var(--border); border-radius:6px;
+}
+.sortable-list .remove{
+  border:none; background:#e74c3c; color:#fff; border-radius:6px; padding:6px 8px; cursor:pointer;
+}
+
+.selected-actions{ display:flex; gap:8px; }
+.selected-actions button{ flex:1 1 0; padding:8px 10px; }
+
+/* 行程明細表 */
+#itinerary{
+  margin-top:12px; padding-top:10px; border-top:1px dashed #d9d9d9;
+  font-size:14px; line-height:1.6;
+}
+#itinerary table{ width:100%; border-collapse:collapse; margin-top:6px; }
+#itinerary th, #itinerary td{
+  border-bottom:1px solid #eee; padding:6px 4px; text-align:left; font-size:13px;
+}
+
+/* PDF 按鈕排版 */
+.preset-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 6px;
+}
+.preset-grid button { width: 100%; }
+
+/* ===== 手機優化（≤ 768px）====== */
+@media (max-width: 768px) {
+  .content { flex-direction: column; gap: 0; min-height: 100vh; }
+  #map {
+    height: calc(100vh - 60px);
+    min-height: 60vh;
+    border-radius: 0; border-left: none; border-right: none;
+  }
+  .sidebar{
+    position: fixed; inset: 0 auto 0 0;
+    width: 86vw; max-width: 360px; height: 100vh;
+    transform: translateX(-100%); transition: transform .25s ease;
+    box-shadow: 2px 0 20px rgba(0,0,0,.18); z-index: 30;
+    border-radius: 0; max-height: 100vh; overflow-y: auto; -webkit-overflow-scrolling: touch;
+  }
+  .sidebar.open { transform: translateX(0); }
+
+  .backdrop { position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 25; display: none; }
+  .backdrop.show { display: block; }
+
+  .fab{
+    position: fixed; right: 16px; bottom: 16px; z-index: 40;
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 64px; height: 64px; border-radius: 999px; border: none;
+    background: var(--brand); color: #fff; font-weight: 700; font-size: 16px;
+    box-shadow: 0 10px 20px rgba(13,110,253,.35);
+  }
+
+  button, select, input[type="time"], input[type="number"], input[type="text"] {
+    min-height: 44px; font-size: 16px;
+  }
+
+  #itinerary { overflow-x: auto; }
+  #itinerary table { min-width: 520px; }
+}
